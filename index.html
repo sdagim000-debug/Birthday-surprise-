@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Happy Birthday Betty ❤️</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&display=swap');
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Cormorant Garamond', serif;
+      background: #0d0d0d;
+      color: #f5e6d3;
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    /* ========== CANDLE INTRO ========== */
+    #intro {
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(ellipse at center, #1a120b 0%, #0a0806 70%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+      transition: opacity 1.2s ease, visibility 1.2s;
+    }
+
+    #intro.hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .candle-container {
+      position: relative;
+      width: 40px;
+      height: 140px;
+      margin-bottom: 40px;
+      cursor: pointer;
+    }
+
+    .candle {
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 22px;
+      height: 90px;
+      background: linear-gradient(to right, #f5e8c7, #fff8e7, #f5e8c7);
+      border-radius: 4px 4px 2px 2px;
+      box-shadow: 0 0 20px rgba(255, 200, 100, 0.15);
+    }
+
+    .candle::before {
+      content: '';
+      position: absolute;
+      top: -8px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 4px;
+      height: 12px;
+      background: #5c4033;
+      border-radius: 1px;
+    }
+
+    .flame {
+      position: absolute;
+      top: -50px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 28px;
+      height: 50px;
+      background: radial-gradient(ellipse at bottom, #ff9a00 0%, #ff5500 40%, transparent 70%);
+      border-radius: 50% 50% 20% 20%;
+      animation: flicker 0.15s infinite alternate;
+      filter: drop-shadow(0 0 12px #ff6a00) drop-shadow(0 0 25px #ff4500);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .flame.out {
+      opacity: 0;
+      transform: translateX(-50%) scale(0.3) translateY(20px);
+    }
+
+    .smoke {
+      position: absolute;
+      top: -30px;
+      left: 50%;
+      width: 8px;
+      height: 8px;
+      background: rgba(180, 180, 180, 0.4);
+      border-radius: 50%;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .smoke.active {
+      animation: smokeRise 1.8s ease-out forwards;
+    }
+
+    @keyframes flicker {
+      0% { transform: translateX(-50%) scale(1) rotate(-1deg); }
+      100% { transform: translateX(-50%) scale(1.05) rotate(1deg); }
+    }
+
+    @keyframes smokeRise {
+      0% { opacity: 0.6; transform: translate(-50%, 0) scale(1); }
+      100% { opacity: 0; transform: translate(-50%, -80px) scale(2.5); }
+    }
+
+    .wish-text {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.35rem;
+      letter-spacing: 0.08em;
+      color: #e8d5b5;
+      text-align: center;
+      opacity: 0.9;
+      animation: softPulse 2.5s ease-in-out infinite;
+      max-width: 280px;
+      line-height: 1.5;
+    }
+
+    @keyframes softPulse {
+      0%, 100% { opacity: 0.75; }
+      50% { opacity: 1; }
+    }
+
+    /* ========== MAIN PAGE ========== */
+    #main {
+      display: none;
+      padding: 40px 20px 80px;
+      max-width: 640px;
+      margin: 0 auto;
+      position: relative;
+    }
+
+    #main.visible {
+      display: block;
+      animation: fadeIn 1.4s ease forwards;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Confetti & balloons background */
+    .bg-decor {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .confetti {
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      opacity: 0.6;
+      animation: fall linear infinite;
+    }
+
+    @keyframes fall {
+      0% { transform: translateY(-10vh) rotate(0deg); opacity: 0.7; }
+      100% { transform: translateY(110vh) rotate(720deg); opacity: 0.2; }
+    }
+
+    .balloon {
+      position: absolute;
+      width: 36px;
+      height: 48px;
+      border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%;
+      opacity: 0.25;
+      animation: float 12s ease-in-out infinite;
+    }
+
+    .balloon::after {
+      content: '';
+      position: absolute;
+      bottom: -12px;
+      left: 50%;
+      width: 1px;
+      height: 40px;
+      background: rgba(255,255,255,0.3);
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0) rotate(-3deg); }
+      50% { transform: translateY(-30px) rotate(3deg); }
+    }
+
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      font-weight: 600;
+      text-align: center;
+      color: #f8e9d0;
+      margin-bottom: 28px;
+      line-height: 1.3;
+      text-shadow: 0 0 30px rgba(255, 180, 100, 0.25);
+    }
+
+    .photo-frame {
+      width: 100%;
+      max-width: 320px;
+      margin: 0 auto 36px;
+      padding: 12px;
+      background: #1a1510;
+      border: 1px solid #3d3228;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.5), inset 0 0 0 1px rgba(255,220,180,0.08);
+      position: relative;
+    }
+
+    .photo-frame img {
+      width: 100%;
+      display: block;
+      filter: grayscale(10%);
+    }
+
+    .letter {
+      font-size: 1.18rem;
+      line-height: 1.75;
+      color: #e8d9c0;
+      text-align: left;
+      margin-bottom: 48px;
+      white-space: pre-line;
+    }
+
+    .letter p {
+      margin-bottom: 1.1em;
+    }
+
+    .polaroid {
+      width: 100%;
+      max-width: 300px;
+      margin: 0 auto 20px;
+      background: #f5f0e6;
+      padding: 14px 14px 40px;
+      box-shadow: 0 15px 40px rgba(0,0,0,0.45);
+      transform: rotate(-2deg);
+      cursor: pointer;
+      transition: transform 0.3s ease, box-shadow 0.3s;
+      position: relative;
+      z-index: 2;
+    }
+
+    .polaroid:hover, .polaroid:active {
+      transform: rotate(0deg) scale(1.03);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.55);
+    }
+
+    .polaroid img {
+      width: 100%;
+      display: block;
+    }
+
+    .polaroid-caption {
+      position: absolute;
+      bottom: 12px;
+      left: 0;
+      right: 0;
+      text-align: center;
+      font-family: 'Playfair Display', serif;
+      font-size: 0.95rem;
+      color: #5c4033;
+      letter-spacing: 0.04em;
+    }
+
+    .play-hint {
+      text-align: center;
+      font-size: 0.95rem;
+      color: #c9b89a;
+      margin-top: 8px;
+      margin-bottom: 40px;
+      opacity: 0.85;
+    }
+
+    .footer {
+      text-align: center;
+      font-size: 1.1rem;
+      color: #d4c4a8;
+      margin-top: 30px;
+      font-style: italic;
+    }
+
+    audio {
+      display: none;
+    }
+
+    /* Mobile adjustments */
+    @media (max-width: 480px) {
+      h1 { font-size: 1.65rem; }
+      .letter { font-size: 1.08rem; }
+      .wish-text { font-size: 1.2rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- INTRO CANDLE -->
+  <div id="intro">
+    <div class="candle-container" id="candleBtn">
+      <div class="flame" id="flame"></div>
+      <div class="smoke" id="smoke"></div>
+      <div class="candle"></div>
+    </div>
+    <p class="wish-text">Make a wish<br>Tap the flame or blow</p>
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <div id="main">
+    <div class="bg-decor" id="decor"></div>
+
+    <h1>Happy Birthday,<br>my beautiful Betty! ❤️🎂✨</h1>
+
+    <div class="photo-frame">
+      <img src="betty.jpg" alt="Betty" />
+    </div>
+
+    <div class="letter">
+To my precious sister, my forever friend, and one of the most special people in my life—today I celebrate not only your birthday, but the beautiful person you are.
+
+Betty, having you as my sister is one of the greatest blessings I could ever ask for. You have a special place in my heart that no one else could ever take. Thank you for all the love, laughter, memories, and little moments that make having you as my sister so special.
+
+On your birthday, I pray that God fills your life with endless happiness, genuine love, peace, success, and beautiful opportunities. May every dream in your heart find its way to you. May you always have reasons to smile, and may you never forget how deeply loved and appreciated you are.
+
+No matter how much life changes or where our journeys take us, you will always have me by your side. I’ll always be your sister, your supporter, and someone you can count on.
+
+Happy Birthday, Betty. ❤️ May this new chapter of your life be filled with beautiful surprises, unforgettable memories, and all the happiness your heart deserves.
+
+I love you endlessly, my beautiful sister. 🥹❤️🎉
+    </div>
+
+    <div class="polaroid" id="polaroid">
+      <img src="together.jpg" alt="Us together" />
+      <div class="polaroid-caption">Tap to hear my voice 💌</div>
+    </div>
+    <p class="play-hint">♡ A little voice note just for you ♡</p>
+
+    <p class="footer">With all my love,<br>Your sister</p>
+  </div>
+
+  <audio id="voice" src="voice-note.m4a" preload="auto"></audio>
+
+  <script>
+    // Create soft confetti & balloons
+    const decor = document.getElementById('decor');
+    const colors = ['#e8b86d', '#f0c987', '#d4a373', '#c9a86c', '#f5d5a0', '#b89b6a'];
+
+    for (let i = 0; i < 28; i++) {
+      const c = document.createElement('div');
+      c.className = 'confetti';
+      c.style.left = Math.random() * 100 + 'vw';
+      c.style.background = colors[Math.floor(Math.random() * colors.length)];
+      c.style.animationDuration = (8 + Math.random() * 10) + 's';
+      c.style.animationDelay = (Math.random() * 8) + 's';
+      c.style.width = (5 + Math.random() * 7) + 'px';
+      c.style.height = c.style.width;
+      decor.appendChild(c);
+    }
+
+    for (let i = 0; i < 6; i++) {
+      const b = document.createElement('div');
+      b.className = 'balloon';
+      b.style.left = (10 + Math.random() * 80) + 'vw';
+      b.style.top = (20 + Math.random() * 50) + 'vh';
+      b.style.background = colors[Math.floor(Math.random() * colors.length)];
+      b.style.animationDelay = (Math.random() * 5) + 's';
+      b.style.animationDuration = (10 + Math.random() * 8) + 's';
+      decor.appendChild(b);
+    }
+
+    // Candle interaction
+    const intro = document.getElementById('intro');
+    const main = document.getElementById('main');
+    const flame = document.getElementById('flame');
+    const smoke = document.getElementById('smoke');
+    const candleBtn = document.getElementById('candleBtn');
+
+    function blowOut() {
+      flame.classList.add('out');
+      smoke.classList.add('active');
+      setTimeout(() => {
+        intro.classList.add('hidden');
+        main.classList.add('visible');
+      }, 900);
+    }
+
+    candleBtn.addEventListener('click', blowOut);
+    // Also allow "blow" feel on mobile by quick successive taps or just click
+
+    // Polaroid plays voice note
+    const polaroid = document.getElementById('polaroid');
+    const voice = document.getElementById('voice');
+    let playing = false;
+
+    polaroid.addEventListener('click', () => {
+      if (!playing) {
+        voice.currentTime = 0;
+        voice.play();
+        playing = true;
+        polaroid.querySelector('.polaroid-caption').textContent = 'Playing… 🎧';
+      } else {
+        voice.pause();
+        playing = false;
+        polaroid.querySelector('.polaroid-caption').textContent = 'Tap to hear my voice 💌';
+      }
+    });
+
+    voice.addEventListener('ended', () => {
+      playing = false;
+      polaroid.querySelector('.polaroid-caption').textContent = 'Tap to hear my voice 💌';
+    });
+  </script>
+</body>
+</html>
